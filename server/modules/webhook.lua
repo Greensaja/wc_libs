@@ -1,11 +1,11 @@
--- server/modules/webhook.lua — wc_lib
+-- server/modules/webhook.lua — wc_libs
 -- Generalized version of wc_encounter/server/webhook.lua's pattern.
 -- Framework-agnostic (uses WCLibPlayer.GetCharacter under the hood,
 -- so it works the same on VORP or RSG).
 --
 -- server_scripts ONLY — never expose webhook URLs or this module to
 -- the client. This was a real vulnerability caught and fixed in
--- wc_encounter; wc_lib bakes the rule in by construction (this file
+-- wc_encounter; wc_libs bakes the rule in by construction (this file
 -- is only ever loaded as a server_script in fxmanifest.lua).
 --
 -- Style preserved from the original: a single code-block embed body
@@ -67,7 +67,7 @@ local function sendRaw(source, url, title, description, color)
   if WCLibFramework.Is('vorp') then
     local Core = WCLibRaw.VORP()
     if Core and Core.AddWebhook then
-      Core.AddWebhook(username, url, (title or 'wc_lib') .. '\n' .. (description or ''))
+      Core.AddWebhook(username, url, (title or 'wc_libs') .. '\n' .. (description or ''))
       return
     end
   end
@@ -75,7 +75,7 @@ local function sendRaw(source, url, title, description, color)
   local payload = {
     username = WCLibConfig.Webhook.Branding,
     embeds = { {
-      title       = title or 'wc_lib',
+      title       = title or 'wc_libs',
       description = description or '',
       color       = tonumber(color) or WCLibConfig.Webhook.DefaultColor,
       footer      = { text = WCLibConfig.Webhook.Branding .. ' • ' .. os.date('%Y-%m-%d %H:%M:%S') },
@@ -86,7 +86,7 @@ local function sendRaw(source, url, title, description, color)
     url,
     function(err)
       if err and err ~= 200 and err ~= 204 then
-        print(('[wc_lib] Webhook error: %s'):format(tostring(err)))
+        print(('[wc_libs] Webhook error: %s'):format(tostring(err)))
       end
     end,
     'POST',
@@ -131,7 +131,7 @@ function WCLibWebhook.Send(source, url, resourceLabel, action, fields, colorMap)
 
   local color = colorMap[action] or WCLibConfig.Webhook.DefaultColor
   local actionTitleCase = action:gsub('^%l', string.upper)
-  local title = (resourceLabel or 'wc_lib') .. ' • ' .. actionTitleCase
+  local title = (resourceLabel or 'wc_libs') .. ' • ' .. actionTitleCase
 
   local desc = '```'
     .. row('Player',       name)

@@ -1,4 +1,4 @@
--- shared/config.lua — wc_lib
+-- shared/config.lua — wc_libs
 -- Shared configuration. Loaded before everything else on both sides.
 
 WCLibConfig = {}
@@ -18,7 +18,7 @@ WCLibConfig.ForceFramework = nil
 -- ─────────────────────────────────────────────────────────
 -- VORP uses fixed currency *indices* (0 = money, 1 = gold, 2 = rol).
 -- RSG uses a *named* money table (commonly 'cash', 'bank', etc).
--- These let wc_lib map GetMoney/GetBankMoney/GetGold consistently
+-- These let wc_libs map GetMoney/GetBankMoney/GetGold consistently
 -- across both without hardcoding magic numbers/strings in adapters.
 WCLibConfig.Money = {
   vorp = {
@@ -39,8 +39,8 @@ WCLibConfig.Money = {
 -- Revive / Heal fallback behaviour
 -- ─────────────────────────────────────────────────────────
 -- RSG Core has no native Revive/Heal — it's normally owned by an
--- ambulance/EMS job resource. Configure the export wc_lib should try
--- to call on RSG. If the resource isn't running, wc_lib will warn to
+-- ambulance/EMS job resource. Configure the export wc_libs should try
+-- to call on RSG. If the resource isn't running, wc_libs will warn to
 -- console and no-op rather than erroring.
 WCLibConfig.RSGAmbulanceResource = 'rsg-ambulancejob'
 WCLibConfig.RSGAmbulanceReviveExport = 'Revive'

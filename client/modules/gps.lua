@@ -1,4 +1,4 @@
--- client/modules/gps.lua — wc_lib
+-- client/modules/gps.lua — wc_libs
 -- GPS multi-route helper (the "draw a route line to a destination"
 -- pattern). Extracted from wc_encounter/client/utils.lua
 -- (setEncounterGPS/clearEncounterGPS), generalized — framework-agnostic.

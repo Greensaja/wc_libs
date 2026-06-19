@@ -1,4 +1,4 @@
--- server/modules/revive.lua — wc_lib
+-- server/modules/revive.lua — wc_libs
 -- Public Revive/Heal access. Dispatches to the active adapter.
 --
 -- On VORP: native Core.Player.Revive/Heal.

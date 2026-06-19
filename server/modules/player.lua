@@ -1,4 +1,4 @@
--- server/modules/player.lua — wc_lib
+-- server/modules/player.lua — wc_libs
 -- Public player/character/job access. Dispatches to whichever
 -- framework adapter is active (set by server/init.lua).
 --

@@ -1,4 +1,4 @@
--- client/modules/camera.lua — wc_lib
+-- client/modules/camera.lua — wc_libs
 -- Scripted "dialogue camera" helper: a side-angle shot framing the
 -- player and an NPC's head, the way cutscene-style conversations are
 -- usually shot. Extracted from wc_encounter/client/utils.lua

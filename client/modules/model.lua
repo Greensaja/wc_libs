@@ -1,4 +1,4 @@
--- client/modules/model.lua — wc_lib
+-- client/modules/model.lua — wc_libs
 -- Model & anim-dict loading helpers.
 -- Extracted from wc_encounter/client/utils.lua — framework-agnostic,
 -- pure native wrappers. No VORP/RSG branching needed here at all.

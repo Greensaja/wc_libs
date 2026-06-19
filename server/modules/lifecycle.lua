@@ -1,4 +1,4 @@
--- server/modules/lifecycle.lua — wc_lib
+-- server/modules/lifecycle.lua — wc_libs
 -- Public lifecycle event registration, normalized across frameworks.
 -- One event name per lifecycle moment — resources never need an
 -- if/else framework check for "when did this player load in."
@@ -12,7 +12,7 @@ WCLibServerLifecycle._activeAdapter = nil
 -- @param callback function(source)
 function WCLibServerLifecycle.OnPlayerLoaded(callback)
   if not WCLibServerLifecycle._activeAdapter then
-    print('[wc_lib] OnPlayerLoaded registered before a framework was detected.')
+    print('[wc_libs] OnPlayerLoaded registered before a framework was detected.')
     return
   end
   WCLibServerLifecycle._activeAdapter.RegisterOnPlayerLoaded(callback)
@@ -26,7 +26,7 @@ end
 -- @param callback function(source)
 function WCLibServerLifecycle.OnPlayerUnload(callback)
   if not WCLibServerLifecycle._activeAdapter then
-    print('[wc_lib] OnPlayerUnload registered before a framework was detected.')
+    print('[wc_libs] OnPlayerUnload registered before a framework was detected.')
     return
   end
   WCLibServerLifecycle._activeAdapter.RegisterOnPlayerUnload(callback)
@@ -36,7 +36,7 @@ end
 -- @param callback function(source, newJob, oldJob)
 function WCLibServerLifecycle.OnJobUpdate(callback)
   if not WCLibServerLifecycle._activeAdapter then
-    print('[wc_lib] OnJobUpdate registered before a framework was detected.')
+    print('[wc_libs] OnJobUpdate registered before a framework was detected.')
     return
   end
   WCLibServerLifecycle._activeAdapter.RegisterOnJobUpdate(callback)

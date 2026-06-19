@@ -1,4 +1,4 @@
--- client/adapters/vorp.lua — wc_lib
+-- client/adapters/vorp.lua — wc_libs
 -- VORP-specific implementations. Never call these directly from your
 -- resources — go through the WCLib.* functions in client/modules/,
 -- which pick the active adapter automatically.
@@ -105,7 +105,7 @@ function WCLibAdapterVORP.Notify(opts)
   local variant = opts.variant or 'avanced'
   local fn = WCLibAdapterVORP.NotifyVariants[variant]
   if not fn then
-    print(("[wc_lib] Unknown VORP notify variant '%s', falling back to 'avanced'"):format(tostring(variant)))
+    print(("[wc_libs] Unknown VORP notify variant '%s', falling back to 'avanced'"):format(tostring(variant)))
     fn = WCLibAdapterVORP.NotifyVariants.avanced
   end
   fn(opts)

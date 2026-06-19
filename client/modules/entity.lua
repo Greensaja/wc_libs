@@ -1,4 +1,4 @@
--- client/modules/entity.lua — wc_lib
+-- client/modules/entity.lua — wc_libs
 -- Ped/horse/prop spawn helpers, safe deletion, and relative
 -- positioning. Extracted from wc_encounter/client/utils.lua
 -- (spawnOnePed, spawnEncHorse, spawnEncProp, deletePedSafe,

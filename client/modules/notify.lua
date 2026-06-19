@@ -1,4 +1,4 @@
--- client/modules/notify.lua — wc_lib
+-- client/modules/notify.lua — wc_libs
 -- Public notify entry point. Dispatches to whichever framework
 -- adapter is active (set by client/init.lua after detection).
 --
@@ -29,7 +29,7 @@ WCLibNotify._activeAdapter = nil
 --                       audioref, audioname, second_description }
 function WCLibNotify.Notify(opts)
   if not WCLibNotify._activeAdapter then
-    print('[wc_lib] Notify called before framework adapter was initialized.')
+    print('[wc_libs] Notify called before framework adapter was initialized.')
     return
   end
   WCLibNotify._activeAdapter.Notify(opts or {})

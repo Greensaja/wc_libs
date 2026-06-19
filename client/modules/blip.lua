@@ -1,4 +1,4 @@
--- client/modules/blip.lua — wc_lib
+-- client/modules/blip.lua — wc_libs
 -- Blip creation/removal helper.
 -- Extracted from wc_encounter/client/utils.lua. Framework-agnostic —
 -- raw RedM blip natives, wrapped behind named functions instead of

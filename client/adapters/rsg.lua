@@ -1,4 +1,4 @@
--- client/adapters/rsg.lua — wc_lib
+-- client/adapters/rsg.lua — wc_libs
 -- RSG-specific implementations. Written against RSG Core's published
 -- docs (rsg.mintlify.app) — NOT yet verified against a live RSG
 -- server. Test against a real RSG install before trusting in
@@ -92,7 +92,7 @@ function WCLibAdapterRSG.Notify(opts)
   end)
 
   if not ok then
-    print(("[wc_lib] RSG notify failed — is ox_lib started? title=%s"):format(tostring(opts.title)))
+    print(("[wc_libs] RSG notify failed — is ox_lib started? title=%s"):format(tostring(opts.title)))
   end
 end
 

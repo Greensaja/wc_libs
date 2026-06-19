@@ -1,4 +1,4 @@
--- _custom/server.lua — wc_lib
+-- _custom/server.lua — wc_libs
 -- Your own project-specific overrides/extensions go here.
 --
 -- Loaded LAST on the server (see fxmanifest.lua), after WCLib has

@@ -1,4 +1,4 @@
--- client/modules/prompt.lua — wc_lib
+-- client/modules/prompt.lua — wc_libs
 -- Native RedM UI prompt wrapper.
 -- Extracted from wc_encounter/client/utils.lua. This is engine-level
 -- (UiPrompt* natives), not framework-level — VORP/RSG don't matter

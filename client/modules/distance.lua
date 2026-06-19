@@ -1,4 +1,4 @@
--- client/modules/distance.lua — wc_lib
+-- client/modules/distance.lua — wc_libs
 -- Distance / proximity helpers.
 -- Extracted from the pattern repeated across wc_encounter's
 -- client.lua (_dist3D2, zone checks) and every encounter file's

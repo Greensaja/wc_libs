@@ -1,4 +1,4 @@
--- server/adapters/rsg.lua — wc_lib
+-- server/adapters/rsg.lua — wc_libs
 -- RSG-specific server implementations. Written against RSG Core's
 -- published docs (rsg.mintlify.app) — NOT yet verified against a
 -- live RSG server. Test before trusting in production.
@@ -106,7 +106,7 @@ end
 function WCLibAdapterRSG.GetGold(source)
   local goldKey = WCLibConfig.Money.rsg.gold
   if not goldKey then
-    print('[wc_lib] GetGold() called on RSG — no gold currency configured (WCLibConfig.Money.rsg.gold is nil). Returning 0.')
+    print('[wc_libs] GetGold() called on RSG — no gold currency configured (WCLibConfig.Money.rsg.gold is nil). Returning 0.')
     return 0
   end
   local Player = getRSGPlayer(source)
@@ -138,14 +138,14 @@ end
 function WCLibAdapterRSG.Revive(source)
   local res = WCLibConfig.RSGAmbulanceResource
   if GetResourceState(res) ~= 'started' then
-    print(("[wc_lib] Revive() called on RSG but '%s' is not running — no-op."):format(res))
+    print(("[wc_libs] Revive() called on RSG but '%s' is not running — no-op."):format(res))
     return false
   end
   local ok = pcall(function()
     exports[res][WCLibConfig.RSGAmbulanceReviveExport](source)
   end)
   if not ok then
-    print(("[wc_lib] Revive() failed calling exports['%s']:%s(source) — check WCLibConfig.RSGAmbulanceReviveExport matches your ambulance job's actual export name."):format(res, WCLibConfig.RSGAmbulanceReviveExport))
+    print(("[wc_libs] Revive() failed calling exports['%s']:%s(source) — check WCLibConfig.RSGAmbulanceReviveExport matches your ambulance job's actual export name."):format(res, WCLibConfig.RSGAmbulanceReviveExport))
     return false
   end
   return true
@@ -154,14 +154,14 @@ end
 function WCLibAdapterRSG.Heal(source)
   local res = WCLibConfig.RSGAmbulanceResource
   if GetResourceState(res) ~= 'started' then
-    print(("[wc_lib] Heal() called on RSG but '%s' is not running — no-op."):format(res))
+    print(("[wc_libs] Heal() called on RSG but '%s' is not running — no-op."):format(res))
     return false
   end
   local ok = pcall(function()
     exports[res][WCLibConfig.RSGAmbulanceHealExport](source)
   end)
   if not ok then
-    print(("[wc_lib] Heal() failed calling exports['%s']:%s(source) — check WCLibConfig.RSGAmbulanceHealExport matches your ambulance job's actual export name."):format(res, WCLibConfig.RSGAmbulanceHealExport))
+    print(("[wc_libs] Heal() failed calling exports['%s']:%s(source) — check WCLibConfig.RSGAmbulanceHealExport matches your ambulance job's actual export name."):format(res, WCLibConfig.RSGAmbulanceHealExport))
     return false
   end
   return true
@@ -184,24 +184,20 @@ end
 -- ─────────────────────────────────────────────────────────
 
 function WCLibAdapterRSG.RegisterOnPlayerLoaded(callback)
-  AddEventHandler('RSGCore:Server:OnPlayerLoaded', function()
+  AddEventHandler('RSGCore:Server:OnPlayerLoaded', function(source)
     callback(source)
   end)
 end
 
 function WCLibAdapterRSG.RegisterOnPlayerUnload(callback)
-  AddEventHandler('RSGCore:Server:OnPlayerUnload', function()
+  AddEventHandler('RSGCore:Server:OnPlayerUnload', function(source)
     callback(source)
   end)
 end
 
-function WCLibAdapterRSG.RegisterOnJobUpdate(callback)
-  AddEventHandler('RSGCore:Client:OnJobUpdate', function(job)
-    -- Note: RSGCore:Client:OnJobUpdate fires client-side per the docs
-    -- we have; there's no confirmed server-side equivalent event name.
-    -- This registration is left here for API symmetry but may not
-    -- fire as expected server-side — verify against a live RSG
-    -- server and adjust if RSG exposes a server event for this.
-    callback(source, job, nil)
-  end)
+function WCLibAdapterRSG.RegisterOnJobUpdate()
+  -- RSGCore:Client:OnJobUpdate is a client-side event and will never
+  -- fire here. No confirmed server-side equivalent exists in the docs.
+  -- No-op + warn, same pattern as VORP's OnPlayerUnload gap.
+  print('[wc_libs] RegisterOnJobUpdate() on RSG: no confirmed server-side job-update event. Callback will not fire. Use WCLib.Raw.RSG() and listen to RSGCore:Server:* events manually if your RSG version exposes one.')
 end

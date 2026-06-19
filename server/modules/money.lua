@@ -1,4 +1,4 @@
--- server/modules/money.lua — wc_lib
+-- server/modules/money.lua — wc_libs
 -- Public money access/mutation. Dispatches to the active adapter.
 --
 -- Reads (GetMoney/GetBankMoney/GetGold) and writes (AddMoney/

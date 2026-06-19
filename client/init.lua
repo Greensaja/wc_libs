@@ -1,4 +1,4 @@
--- client/init.lua — wc_lib
+-- client/init.lua — wc_libs
 -- Loads last on the client side (see fxmanifest.lua ordering).
 -- Detects which framework is running, wires the matching adapter,
 -- and assembles the final WCLib table that gets exported.
@@ -12,7 +12,7 @@ local function detectFramework()
   local rsgUp  = WCLibAdapterRSG.IsPresent()
 
   if vorpUp and rsgUp then
-    print('[wc_lib] WARNING: both vorp_core and rsg-core are running. Defaulting to VORP — set WCLibConfig.ForceFramework to override.')
+    print('[wc_libs] WARNING: both vorp_core and rsg-core are running. Defaulting to VORP — set WCLibConfig.ForceFramework to override.')
     return 'vorp'
   elseif vorpUp then
     return 'vorp'
@@ -20,7 +20,7 @@ local function detectFramework()
     return 'rsg'
   end
 
-  print('[wc_lib] WARNING: no supported framework detected (vorp_core / rsg-core). Framework-dependent WCLib functions will not work until WCLibConfig.ForceFramework is set or a core resource is started.')
+  print('[wc_libs] WARNING: no supported framework detected (vorp_core / rsg-core). Framework-dependent WCLib functions will not work until WCLibConfig.ForceFramework is set or a core resource is started.')
   return nil
 end
 
@@ -54,7 +54,7 @@ WCLibRaw = {}
 
 function WCLibRaw.VORP()
   if not WCLibAdapterVORP.IsPresent() then
-    print('[wc_lib] WCLib.Raw.VORP() called but vorp_core is not running.')
+    print('[wc_libs] WCLib.Raw.VORP() called but vorp_core is not running.')
     return nil
   end
   return WCLibAdapterVORP.Raw()
@@ -62,7 +62,7 @@ end
 
 function WCLibRaw.RSG()
   if not WCLibAdapterRSG.IsPresent() then
-    print('[wc_lib] WCLib.Raw.RSG() called but rsg-core is not running.')
+    print('[wc_libs] WCLib.Raw.RSG() called but rsg-core is not running.')
     return nil
   end
   return WCLibAdapterRSG.Raw()
@@ -81,7 +81,7 @@ WCLibLifecycle = {}
 -- @param callback function
 function WCLibLifecycle.OnPlayerLoaded(callback)
   if not _adapter then
-    print('[wc_lib] OnPlayerLoaded registered before a framework was detected — callback will never fire.')
+    print('[wc_libs] OnPlayerLoaded registered before a framework was detected — callback will never fire.')
     return
   end
   _adapter.RegisterOnPlayerLoaded(callback)
@@ -94,7 +94,7 @@ end
 -- @param callback function
 function WCLibLifecycle.OnPlayerSpawned(callback)
   if not _adapter then
-    print('[wc_lib] OnPlayerSpawned registered before a framework was detected — callback will never fire.')
+    print('[wc_libs] OnPlayerSpawned registered before a framework was detected — callback will never fire.')
     return
   end
   _adapter.RegisterOnPlayerSpawned(callback)
@@ -163,7 +163,7 @@ WCLib = {
 -- ─────────────────────────────────────────────────────────
 -- Exports
 -- ─────────────────────────────────────────────────────────
--- Other resources call this as: exports.wc_lib:GetMoney(source), etc.
+-- Other resources call this as: exports.wc_libs:GetMoney(source), etc.
 -- We expose every WCLib function individually rather than one single
 -- "GetTable" export, since per-function exports give better
 -- autocomplete/intellisense in editors and match how vorp_core/
@@ -185,6 +185,6 @@ end
 
 CreateThread(function()
   Wait(0)
-  print(('[wc_lib] client ready — framework: %s — version: %s'):format(
+  print(('[wc_libs] client ready — framework: %s — version: %s'):format(
     tostring(_framework or 'NONE DETECTED'), WCLib_GetVersion()))
 end)

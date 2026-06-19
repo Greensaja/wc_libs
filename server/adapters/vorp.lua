@@ -1,4 +1,4 @@
--- server/adapters/vorp.lua — wc_lib
+-- server/adapters/vorp.lua — wc_libs
 -- VORP-specific server implementations. Never call these directly —
 -- go through WCLib.* functions in server/modules/.
 --
@@ -113,7 +113,7 @@ function WCLibAdapterVORP.GetBankMoney(source)
   -- VORP core doesn't have a separate "bank" currency in the docs we
   -- have (money/gold/rol only) — warn + return nil rather than
   -- silently returning the wrong value.
-  print('[wc_lib] GetBankMoney() called on VORP — VORP has no native bank currency (money/gold/rol only). Returning nil.')
+  print('[wc_libs] GetBankMoney() called on VORP — VORP has no native bank currency (money/gold/rol only). Returning nil.')
   return nil
 end
 
@@ -138,7 +138,7 @@ end
 
 function WCLibAdapterVORP.Revive(source)
   if not core() or not core().Player or not core().Player.Revive then
-    print('[wc_lib] VORP Core.Player.Revive not available — update vorp_core.')
+    print('[wc_libs] VORP Core.Player.Revive not available — update vorp_core.')
     return false
   end
   core().Player.Revive(source)
@@ -147,7 +147,7 @@ end
 
 function WCLibAdapterVORP.Heal(source)
   if not core() or not core().Player or not core().Player.Heal then
-    print('[wc_lib] VORP Core.Player.Heal not available — update vorp_core.')
+    print('[wc_libs] VORP Core.Player.Heal not available — update vorp_core.')
     return false
   end
   core().Player.Heal(source)
@@ -184,7 +184,7 @@ function WCLibAdapterVORP.RegisterOnPlayerUnload(callback)
   -- the docs we have. Closest analog available is none confirmed —
   -- left as a documented gap rather than guessing at an event name.
   -- Extend in _custom/server.lua if your VORP build exposes one.
-  print('[wc_lib] OnPlayerUnload has no confirmed VORP server event yet — callback registered but will not fire. See server/adapters/vorp.lua.')
+  print('[wc_libs] OnPlayerUnload has no confirmed VORP server event yet — callback registered but will not fire. See server/adapters/vorp.lua.')
 end
 
 function WCLibAdapterVORP.RegisterOnJobUpdate(callback)

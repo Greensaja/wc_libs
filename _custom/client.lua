@@ -1,4 +1,4 @@
--- _custom/client.lua — wc_lib
+-- _custom/client.lua — wc_libs
 -- Your own project-specific overrides/extensions go here.
 --
 -- This file is loaded LAST on the client (see fxmanifest.lua), after
@@ -9,7 +9,7 @@
 --   3. Re-export anything you add here so other resources can use it:
 --      exports('MyCustomThing', WCLib.MyCustomThing)
 --
--- Keeping overrides isolated to this file means future wc_lib updates
+-- Keeping overrides isolated to this file means future wc_libs updates
 -- (new modules, bugfixes to the core adapters) won't silently stomp
 -- your project-specific changes — you only need to re-check this one
 -- file after pulling an update, not the whole lib.

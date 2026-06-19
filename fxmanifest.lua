@@ -4,24 +4,31 @@ game "rdr3"
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 lua54 'yes'
 
-name        'wc_lib'
+name        'wc_libs'
 description 'Green Studio — Shared Framework Bridge & Utility Library (VORP / RSG)'
 author      'Green Studio'
 version     '1.0.0'
 
 -- ─────────────────────────────────────────────────────────
 -- Version checker (mirrors VORP's vorp_checker convention)
--- Update wc_lib_github to point at your actual repo once created.
+-- Update wc_libs_github to point at your actual repo once created.
 -- The version.file in that repo's root should contain a line like
 -- <1.0.0> followed by changelog bullets — see version.lua for the
 -- local-side check that reads this.
 -- ─────────────────────────────────────────────────────────
-wc_lib_checker 'yes'
-wc_lib_name   '^5wc_lib ^4Version Check^3'
-wc_lib_github 'https://github.com/REPLACE_ME/wc_lib'
+wc_libs_checker 'yes'
+wc_libs_name   '^5wc_libs ^4Version Check^3'
+wc_libs_github 'https://github.com/REPLACE_ME/wc_libs'
+
+files {
+  'init.lua', -- bridge file: other resources include @wc_libs/init.lua to get the wc global
+}
 
 shared_scripts {
-  '@ox_lib/init.lua', -- safe to keep even if not installed; guarded with pcall where used
+  -- ox_lib is optional. If it is installed and started before wc_libs,
+  -- the RSG notify adapter will use lib.notify; otherwise it falls back
+  -- to TriggerEvent('ox_lib:notify'). Do NOT add '@ox_lib/init.lua'
+  -- here — FiveM crashes at resource-parse time if ox_lib is absent.
   'shared/config.lua',
   'version.lua',
 }
@@ -54,6 +61,6 @@ server_scripts {
   '_custom/server.lua',
 }
 
-exports {
-  'WCLib',
-}
+-- Exports are registered at runtime in client/init.lua and server/init.lua
+-- via individual exports(fnName, fn) calls for each WCLib function.
+-- No manifest export block needed with fx_version "adamant".
