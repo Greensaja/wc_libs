@@ -1,0 +1,25 @@
+-- _custom/client.lua — wc_lib
+-- Your own project-specific overrides/extensions go here.
+--
+-- This file is loaded LAST on the client (see fxmanifest.lua), after
+-- WCLib has already been fully assembled — so you can safely:
+--   1. Add new fields to WCLib (e.g. WCLib.MyCustomThing = function() ... end)
+--   2. Override an existing WCLib function if a framework adapter
+--      doesn't behave the way your specific server needs
+--   3. Re-export anything you add here so other resources can use it:
+--      exports('MyCustomThing', WCLib.MyCustomThing)
+--
+-- Keeping overrides isolated to this file means future wc_lib updates
+-- (new modules, bugfixes to the core adapters) won't silently stomp
+-- your project-specific changes — you only need to re-check this one
+-- file after pulling an update, not the whole lib.
+--
+-- Pattern borrowed from jo_libs' _custom/FrameworkClass.lua override
+-- seam.
+
+-- Example (commented out):
+--
+-- WCLib.MyCustomThing = function(source)
+--   -- your logic here
+-- end
+-- exports('MyCustomThing', WCLib.MyCustomThing)

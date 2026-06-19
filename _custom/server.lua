@@ -1,0 +1,15 @@
+-- _custom/server.lua — wc_lib
+-- Your own project-specific overrides/extensions go here.
+--
+-- Loaded LAST on the server (see fxmanifest.lua), after WCLib has
+-- already been fully assembled. Same pattern as _custom/client.lua —
+-- safe place to add new WCLib fields or override adapter behaviour
+-- without touching the core lib files, so updates don't stomp your
+-- changes.
+
+-- Example (commented out):
+--
+-- WCLib.MyCustomServerThing = function(source)
+--   -- your logic here
+-- end
+-- exports('MyCustomServerThing', WCLib.MyCustomServerThing)
