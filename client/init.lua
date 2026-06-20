@@ -131,10 +131,17 @@ WCLib = {
   SetPromptVisible = WCLibPrompt.SetVisible,
   IsPromptCompleted = WCLibPrompt.IsCompleted,
   DeletePrompt    = WCLibPrompt.Delete,
+  WatchPrompt     = WCLibFlow.WatchPrompt,
+  WatchPlayerNear = WCLibFlow.WatchPlayerNear,
+  WatchPlayerAway = WCLibFlow.WatchPlayerAway,
 
   -- blips
   CreateBlip = WCLibBlip.Create,
   RemoveBlip = WCLibBlip.Remove,
+  CreateMissionMarker = WCLibFlow.CreateMissionMarker,
+  ClearMissionMarker  = WCLibFlow.ClearMissionMarker,
+  CreateCleanupBag    = WCLibFlow.CreateCleanupBag,
+  CleanupEncounter    = WCLibFlow.CleanupEncounter,
 
   -- gps
   SetGPSRoute   = WCLibGPS.SetRoute,

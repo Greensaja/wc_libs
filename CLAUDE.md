@@ -70,7 +70,11 @@ wc_libs/
 | `WcNotify(msg, level, placement)` | notify | wc_notify:send wrapper |
 | `WcTip(msg, duration, opts)` / `wctip(...)` | notify | wc_libs NUI toast using `nui/image/toast.png` |
 | `CreatePrompt / SetPromptVisible / IsPromptCompleted / DeletePrompt` | prompt | |
+| `WatchPrompt(prompt, target, radius, onPressed, opts)` | flow | Proximity-gated prompt watcher with timeout, guard, and cancel callback |
+| `WatchPlayerNear / WatchPlayerAway` | flow | Reusable proximity watchers for coords, vector3, or entity targets |
 | `CreateBlip / RemoveBlip` | blip | |
+| `CreateMissionMarker / ClearMissionMarker` | flow | Blip handle wrapper with optional GPS route cleanup |
+| `CreateCleanupBag / CleanupEncounter` | flow | Collect and clean prompts, blips, GPS routes, peds, vehicles, objects, and custom cleanup callbacks |
 | `SetGPSRoute / ClearGPSRoute` | gps | |
 | `EnableDialogueCamera / DisableDialogueCamera / GetDialogueCameraHandle` | camera | |
 | `SnapZ / SpawnPed / SpawnHorse / SpawnProp` | entity | |

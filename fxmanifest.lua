@@ -54,6 +54,7 @@ client_scripts {
   'client/modules/notify.lua',
   'client/modules/progress.lua',
   'client/modules/callback.lua',
+  'client/modules/flow.lua',
   'client/modules/emote.lua',
   'client/modules/zone.lua',
   'client/modules/wagon.lua',

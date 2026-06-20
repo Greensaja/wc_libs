@@ -85,6 +85,7 @@ WCLibConfig.ForceFramework = 'vorp' -- or 'rsg', or nil to auto-detect
 - **Notify** — all 17 VORP notify variants, `WcNotify`, and `WcTip` toast prompts
 - **Progress** — `StartProgress` progressbar wrapper with timer fallback
 - **Native prompts** — `CreatePrompt`, `SetPromptVisible`, `IsPromptCompleted`, `DeletePrompt`
+- **Flow helpers** — `CreateCleanupBag`, `CleanupEncounter`, `WatchPrompt`, `WatchPlayerNear`, `WatchPlayerAway`, `CreateMissionMarker`
 - **Peds, horses & props** — `SpawnPed`, `SpawnHorse`, `SpawnProp`, `DeletePed`, `DeleteVehicle`, `FaceEachOther`, `PlacePedRelative`
 - **Distance & proximity** — `GetDistance`, `IsNearCoords`, `IsPlayerNearCoords`
 - **Discord webhooks** — `SendWebhook`, Green Studio branded embeds, `server_scripts`-only by construction (webhook URLs never exposed to the client)
