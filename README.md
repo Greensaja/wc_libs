@@ -82,7 +82,8 @@ WCLibConfig.ForceFramework = 'vorp' -- or 'rsg', or nil to auto-detect
 - **Player & character** — `GetPlayer`, `GetCharacter`, `GetJob`
 - **Money** — `GetMoney`, `GetBankMoney`, `GetGold`, `AddMoney`, `RemoveMoney`
 - **Revive & heal** — `Revive`, `Heal` (no-op + console warning on RSG if the ambulance job resource isn't running)
-- **Notify** — all 17 VORP notify variants, with best-fit fallback to `lib.notify` on RSG
+- **Notify** — all 17 VORP notify variants, `WcNotify`, and `WcTip` toast prompts
+- **Progress** — `StartProgress` progressbar wrapper with timer fallback
 - **Native prompts** — `CreatePrompt`, `SetPromptVisible`, `IsPromptCompleted`, `DeletePrompt`
 - **Peds, horses & props** — `SpawnPed`, `SpawnHorse`, `SpawnProp`, `DeletePed`, `DeleteVehicle`, `FaceEachOther`, `PlacePedRelative`
 - **Distance & proximity** — `GetDistance`, `IsNearCoords`, `IsPlayerNearCoords`

@@ -116,6 +116,8 @@ WCLib = {
 
   -- notify
   Notify = WCLibNotify.Notify,
+  WcTip = WCLibNotify.WcTip,
+  wctip = WCLibNotify.wctip,
   StartProgress = WCLibProgress.Start,
   TriggerCallback = WCLibClientCallback.TriggerCallback,
 

@@ -68,6 +68,7 @@ wc_libs/
 | `TriggerCallback(name, ...)` | callback | Client -> server callback trigger, auto-prefixed `wc_libs:` |
 | `TopNotify(title, msg, header)` | notify | Native UiFeedPostTwoTextShard via DataView |
 | `WcNotify(msg, level, placement)` | notify | wc_notify:send wrapper |
+| `WcTip(msg, duration, opts)` / `wctip(...)` | notify | wc_libs NUI toast using `nui/image/toast.png` |
 | `CreatePrompt / SetPromptVisible / IsPromptCompleted / DeletePrompt` | prompt | |
 | `CreateBlip / RemoveBlip` | blip | |
 | `SetGPSRoute / ClearGPSRoute` | gps | |

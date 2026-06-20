@@ -150,6 +150,24 @@ function WCLibNotify.WcNotify(msg, level, placement)
   }, level or 'INFO')
 end
 
+--- Shows a compact wc_libs NUI tip using nui/image/toast.png.
+-- @param msg string
+-- @param duration number|nil milliseconds, defaults to 3000
+-- @param opts table|nil { placement = 'lower-center', y = '74vh', rtl = false }
+function WCLibNotify.WcTip(msg, duration, opts)
+  opts = opts or {}
+  SendNUIMessage({
+    type      = 'wctip:show',
+    text      = tostring(msg or ''),
+    duration  = tonumber(duration) or 3000,
+    placement = opts.placement or 'lower-center',
+    y         = opts.y,
+    rtl       = opts.rtl == true,
+  })
+end
+
+WCLibNotify.wctip = WCLibNotify.WcTip
+
 -- ─────────────────────────────────────────────────────────
 -- Framework notify (original)
 -- ─────────────────────────────────────────────────────────

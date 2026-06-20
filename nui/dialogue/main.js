@@ -51,6 +51,14 @@ const acc = {
   btnDecline: $('acc-btn-decline'),
 };
 
+const tip = {
+  root:  $('wctip-root'),
+  toast: $('wctip-toast'),
+  text:  $('wctip-text'),
+};
+
+let tipTimer = null;
+
 // ── Typewriter ───────────────────────────────────────────
 let typewriterTimer = null;
 
@@ -182,6 +190,26 @@ function closeAll() {
   acc.root.classList.add('hidden');
 }
 
+function showWcTip(data) {
+  if (!tip.root || !tip.toast || !tip.text) return;
+
+  if (tipTimer) clearTimeout(tipTimer);
+
+  tip.text.textContent = data.text || '';
+  tip.toast.classList.toggle('rtl', data.rtl === true);
+  tip.root.className = 'wctip-root ' + (data.placement || 'lower-center');
+  if (data.y) tip.root.style.top = data.y;
+  else tip.root.style.top = '';
+
+  tip.root.classList.remove('hidden');
+  requestAnimationFrame(() => tip.root.classList.add('visible'));
+
+  tipTimer = setTimeout(() => {
+    tip.root.classList.remove('visible');
+    setTimeout(() => tip.root.classList.add('hidden'), 180);
+  }, data.duration || 3000);
+}
+
 // ─────────────────────────────────────────────────────────
 // ACCEPT / DECLINE PANEL
 // ─────────────────────────────────────────────────────────
@@ -232,6 +260,7 @@ window.addEventListener('message', function (event) {
     case 'wcdialogue:timerUpdate':    updateTimer(data.timeLeft);   break;
     case 'wcdialogue:openAccept':     openAccept(data);             break;
     case 'wcdialogue:closeDialogue':  closeAll();                   break;
+    case 'wctip:show':                showWcTip(data);              break;
     default: break;
   }
 });

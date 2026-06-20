@@ -28,6 +28,8 @@ files {
   'nui/dialogue/style.css',
   'nui/dialogue/main.js',
   'nui/dialogue/RDR_Lino_Regular.ttf',
+  'nui/image/toast.png',
+  'nui/image/toast-rtl.png',
 }
 
 shared_scripts {

@@ -42,6 +42,61 @@ body {
 }
 
 .hidden { display: none !important; }
+/* WcTip toast */
+.wctip-root {
+  position: fixed;
+  left: 50%;
+  top: 74vh;
+  transform: translateX(-50%);
+  width: min(760px, 76vw);
+  height: 74px;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.wctip-root.lower-center { top: 74vh; }
+.wctip-root.center { top: 50vh; transform: translate(-50%, -50%); }
+.wctip-root.bottom-center { top: auto; bottom: 8vh; }
+
+.wctip-toast {
+  width: 100%;
+  height: 100%;
+  background-image: url('../image/toast.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 42px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.wctip-toast.rtl {
+  background-image: url('../image/toast-rtl.png');
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.wctip-root.visible .wctip-toast {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wctip-text {
+  color: rgba(255, 255, 255, 0.96);
+  font-family: var(--font-main);
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
 
 /* ═══════════════════════════════════════════════════════
    MAIN DIALOGUE PANEL
