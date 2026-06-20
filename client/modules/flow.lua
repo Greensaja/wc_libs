@@ -4,6 +4,40 @@
 
 WCLibFlow = {}
 
+local activeWatchers = {}
+
+local function watcherOwner(opts)
+  opts = opts or {}
+  return opts.ownerResource or GetInvokingResource() or GetCurrentResourceName()
+end
+
+local function trackWatcher(handle, owner)
+  if not owner or owner == GetCurrentResourceName() then return handle end
+  activeWatchers[owner] = activeWatchers[owner] or {}
+  activeWatchers[owner][handle] = true
+  return handle
+end
+
+local function untrackWatcher(handle)
+  if not handle or not handle.ownerResource then return end
+  local bucket = activeWatchers[handle.ownerResource]
+  if bucket then
+    bucket[handle] = nil
+    if next(bucket) == nil then activeWatchers[handle.ownerResource] = nil end
+  end
+end
+
+AddEventHandler('onResourceStop', function(resourceName)
+  local bucket = activeWatchers[resourceName]
+  if not bucket then return end
+  for handle in pairs(bucket) do
+    handle.canceled = true
+    handle.reason = 'owner_stopped'
+    handle.skipCallbacks = true
+  end
+  activeWatchers[resourceName] = nil
+end)
+
 local function existsEntity(entity)
   return entity and entity ~= 0 and DoesEntityExist(entity)
 end
@@ -20,6 +54,7 @@ end
 
 local function shouldStop(opts)
   if not opts then return false end
+  if opts.ownerResource and GetResourceState(opts.ownerResource) ~= 'started' then return true end
   if opts.guard and opts.guard() == false then return true end
   if opts.cancelWhenPlayerDead and IsEntityDead(PlayerPedId()) then return true end
   return false
@@ -31,6 +66,15 @@ local function removeObject(obj)
     SetEntityAsMissionEntity(obj, false, true)
     DeleteEntity(obj)
   end
+end
+
+local function safeCall(fn, ...)
+  if type(fn) ~= 'function' then return false end
+  local ok, err = pcall(fn, ...)
+  if not ok then
+    print(('[wc_libs] cleanup warning: %s'):format(tostring(err)))
+  end
+  return ok
 end
 
 function WCLibFlow.CreateCleanupBag()
@@ -59,23 +103,27 @@ function WCLibFlow.CreateCleanupBag()
 
     for _, prompt in ipairs(self.prompts) do
       if WCLibPrompt then
-        WCLibPrompt.SetVisible(prompt, false)
-        WCLibPrompt.Delete(prompt)
+        safeCall(WCLibPrompt.SetVisible, prompt, false)
+        safeCall(WCLibPrompt.Delete, prompt)
       end
     end
 
     for _, blip in ipairs(self.blips) do
-      WCLibFlow.ClearMissionMarker(blip)
+      safeCall(WCLibFlow.ClearMissionMarker, blip)
     end
 
     if self.gps and WCLibGPS then
-      WCLibGPS.ClearRoute()
+      safeCall(WCLibGPS.ClearRoute)
     end
 
-    for _, fn in ipairs(self.customs) do pcall(fn) end
-    for _, ped in ipairs(self.peds) do if WCLibEntity then WCLibEntity.DeletePed(ped) else removeObject(ped) end end
-    for _, vehicle in ipairs(self.vehicles) do if WCLibEntity then WCLibEntity.DeleteVehicle(vehicle) else removeObject(vehicle) end end
-    for _, object in ipairs(self.objects) do removeObject(object) end
+    for _, fn in ipairs(self.customs) do safeCall(fn) end
+    for _, ped in ipairs(self.peds) do
+      if WCLibEntity then safeCall(WCLibEntity.DeletePed, ped) else safeCall(removeObject, ped) end
+    end
+    for _, vehicle in ipairs(self.vehicles) do
+      if WCLibEntity then safeCall(WCLibEntity.DeleteVehicle, vehicle) else safeCall(removeObject, vehicle) end
+    end
+    for _, object in ipairs(self.objects) do safeCall(removeObject, object) end
   end
 
   return bag
@@ -106,12 +154,14 @@ end
 
 local function makeWatcher(predicate, onHit, opts)
   opts = opts or {}
-  local handle = { canceled = false, hit = false, reason = nil }
+  opts.ownerResource = watcherOwner(opts)
+  local handle = { canceled = false, hit = false, reason = nil, ownerResource = opts.ownerResource }
   function handle:Cancel(reason)
     self.canceled = true
     self.reason = reason or 'canceled'
   end
   handle.cancel = function(reason) handle:Cancel(reason) end
+  trackWatcher(handle, opts.ownerResource)
 
   CreateThread(function()
     local deadline = opts.timeoutMs and (GetGameTimer() + opts.timeoutMs) or nil
@@ -124,14 +174,15 @@ local function makeWatcher(predicate, onHit, opts)
       if predicate() then
         handle.hit = true
         handle.reason = 'hit'
-        if onHit then onHit(handle) end
+        if onHit and not handle.skipCallbacks then onHit(handle) end
         break
       end
 
       Wait(tick)
     end
 
-    if handle.canceled and opts.onCancel then opts.onCancel(handle.reason, handle) end
+    if handle.canceled and opts.onCancel and not handle.skipCallbacks then opts.onCancel(handle.reason, handle) end
+    untrackWatcher(handle)
   end)
 
   return handle
@@ -153,13 +204,15 @@ end
 
 function WCLibFlow.WatchPrompt(prompt, target, radius, onPressed, opts)
   opts = opts or {}
+  opts.ownerResource = watcherOwner(opts)
   local inRange = false
-  local handle = { canceled = false, pressed = false, reason = nil }
+  local handle = { canceled = false, pressed = false, reason = nil, ownerResource = opts.ownerResource }
   function handle:Cancel(reason)
     self.canceled = true
     self.reason = reason or 'canceled'
   end
   handle.cancel = function(reason) handle:Cancel(reason) end
+  trackWatcher(handle, opts.ownerResource)
 
   CreateThread(function()
     local deadline = opts.timeoutMs and (GetGameTimer() + opts.timeoutMs) or nil
@@ -177,14 +230,14 @@ function WCLibFlow.WatchPrompt(prompt, target, radius, onPressed, opts)
         if not inRange then
           inRange = true
           WCLibPrompt.SetVisible(prompt, true)
-          if opts.onEnter then opts.onEnter(handle) end
+          if opts.onEnter and not handle.skipCallbacks then opts.onEnter(handle) end
         end
 
         if WCLibPrompt.IsCompleted(prompt) then
           handle.pressed = true
           handle.reason = 'pressed'
           WCLibPrompt.SetVisible(prompt, false)
-          if onPressed then onPressed(handle) end
+          if onPressed and not handle.skipCallbacks then onPressed(handle) end
           break
         end
 
@@ -193,14 +246,15 @@ function WCLibFlow.WatchPrompt(prompt, target, radius, onPressed, opts)
         if inRange then
           inRange = false
           WCLibPrompt.SetVisible(prompt, false)
-          if opts.onLeave then opts.onLeave(handle) end
+          if opts.onLeave and not handle.skipCallbacks then opts.onLeave(handle) end
         end
         Wait(farTick)
       end
     end
 
     if opts.autoHide ~= false then WCLibPrompt.SetVisible(prompt, false) end
-    if handle.canceled and opts.onCancel then opts.onCancel(handle.reason, handle) end
+    if handle.canceled and opts.onCancel and not handle.skipCallbacks then opts.onCancel(handle.reason, handle) end
+    untrackWatcher(handle)
   end)
 
   return handle

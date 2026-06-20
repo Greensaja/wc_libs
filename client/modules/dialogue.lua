@@ -13,7 +13,26 @@ WCLibDialogue = {}
 -- Internal state (one dialogue at a time — same constraint as wc_encounter)
 -- ─────────────────────────────────────────────────────────
 
-local _active = nil   -- { timerRunning, trust, currentOptions, stepDefs, finalTrust, acceptResult }
+local _active = nil   -- { timerRunning, trust, currentOptions, stepDefs, finalTrust, acceptResult, ownerResource }
+
+local function dialogueOwner(opts)
+  opts = opts or {}
+  return opts.ownerResource or GetInvokingResource() or GetCurrentResourceName()
+end
+
+local function ownerStopped(owner)
+  return owner and owner ~= GetCurrentResourceName() and GetResourceState(owner) ~= 'started'
+end
+
+AddEventHandler('onResourceStop', function(resourceName)
+  if _active and _active.ownerResource == resourceName then
+    _active.timerRunning = false
+    _active.ownerStopped = true
+    SendNUIMessage({ type = 'wcdialogue:closeDialogue' })
+    SetNuiFocus(false, false)
+    WCLibCamera.DisableDialogueCamera()
+  end
+end)
 
 -- ─────────────────────────────────────────────────────────
 -- NUI callbacks (registered once at load time)
@@ -98,6 +117,7 @@ end
 function WCLibDialogue.Run(def, npcPed, timeoutSecs, opts)
   if not def then return 'fail' end
   opts = opts or {}
+  local owner = dialogueOwner(opts)
 
   local timerLeft = timeoutSecs or 60
   local outcome   = nil
@@ -110,6 +130,7 @@ function WCLibDialogue.Run(def, npcPed, timeoutSecs, opts)
     trust          = 50,
     currentOptions = options,
     stepDefs       = def.steps,
+    ownerResource  = owner,
   }
 
   if not opts.skipFaceEachOther then WCLibEntity.FaceEachOther(npcPed) end
@@ -137,6 +158,13 @@ function WCLibDialogue.Run(def, npcPed, timeoutSecs, opts)
   CreateThread(function()
     while _active and _active.timerRunning do
       Wait(1000)
+      if ownerStopped(owner) then
+        if _active then
+          _active.timerRunning = false
+          _active.ownerStopped = true
+        end
+        break
+      end
       timerLeft = timerLeft - 1
       if _active then
         SendNUIMessage({ type = 'wcdialogue:timerUpdate', timeLeft = timerLeft })
@@ -151,13 +179,21 @@ function WCLibDialogue.Run(def, npcPed, timeoutSecs, opts)
     end
   end)
 
-  while not outcome and (_active and _active.timerRunning) do Wait(100) end
+  while not outcome and (_active and _active.timerRunning) do
+    if ownerStopped(owner) then
+      _active.ownerStopped = true
+      break
+    end
+    Wait(100)
+  end
 
   local finalTrust = (_active and (_active.finalTrust or _active.trust)) or 50
+  local stopped = _active and _active.ownerStopped
 
   stopGestures()
   _close()
 
+  if stopped then return 'fail' end
   if outcome == 'timeout' then return 'fail' end
   if finalTrust >= 70 then return 'success'
   elseif finalTrust >= 40 then return 'partial'
@@ -178,6 +214,7 @@ end
 function WCLibDialogue.RunAccept(def, npcPed, opts)
   if not def then return true end
   opts = opts or {}
+  local owner = dialogueOwner(opts)
 
   local result = nil
 
@@ -187,7 +224,7 @@ function WCLibDialogue.RunAccept(def, npcPed, opts)
 
   local stopGestures = WCLibEmote.StartConversationGestures(npcPed, opts.skipNpcGestures, opts.skipPlayerGestures)
 
-  _active = { timerRunning = true, acceptResult = nil }
+  _active = { timerRunning = true, acceptResult = nil, ownerResource = owner }
 
   SendNUIMessage({
     type    = 'wcdialogue:openAccept',
@@ -202,15 +239,22 @@ function WCLibDialogue.RunAccept(def, npcPed, opts)
 
   local deadline = GetGameTimer() + 30000
   while result == nil and GetGameTimer() < deadline do
+    if ownerStopped(owner) then
+      if _active then _active.ownerStopped = true end
+      break
+    end
     Wait(100)
     if _active and _active.acceptResult ~= nil then
       result = _active.acceptResult and 'accept' or 'decline'
     end
   end
 
+  local stopped = _active and _active.ownerStopped
+
   stopGestures()
   _close()
 
+  if stopped then return false end
   return result == 'accept'
 end
 
