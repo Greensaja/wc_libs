@@ -45,6 +45,7 @@ client_scripts {
   'client/adapters/vorp.lua',
   'client/adapters/rsg.lua',
   'client/modules/model.lua',
+  'client/modules/anim.lua',
   'client/modules/prompt.lua',
   'client/modules/blip.lua',
   'client/modules/gps.lua',

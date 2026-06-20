@@ -76,6 +76,9 @@ wc_libs/
 | `CreateMissionMarker / ClearMissionMarker` | flow | Blip handle wrapper with optional GPS route cleanup |
 | `CreateCleanupBag / CleanupEncounter` | flow | Collect and clean prompts, blips, GPS routes, peds, vehicles, objects, and custom cleanup callbacks |
 | `SetGPSRoute / ClearGPSRoute` | gps | |
+| `PlayAnim / PlayAnimLooped / PlayAnimAt` | anim | Load dict + play RedM animation helpers |
+| `IsAnimPlaying / StopAnim / StopAnimNow` | anim | Animation state and cleanup helpers |
+| `PlayScenario / PlayScenarioAt / StopScenario` | anim | Scenario helpers with duration / position options |
 | `EnableDialogueCamera / DisableDialogueCamera / GetDialogueCameraHandle` | camera | |
 | `SnapZ / SpawnPed / SpawnHorse / SpawnProp` | entity | |
 | `DeletePed / DeleteVehicle / FaceEachOther / PlacePedRelative` | entity | |

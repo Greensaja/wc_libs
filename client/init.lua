@@ -126,6 +126,17 @@ WCLib = {
   LoadAnyModel     = WCLibModel.LoadAnyModel,
   LoadAnimDictSafe = WCLibModel.LoadAnimDictSafe,
 
+  -- animations & scenarios
+  PlayAnim       = WCLibAnim.Play,
+  PlayAnimLooped = WCLibAnim.PlayLooped,
+  PlayAnimAt     = WCLibAnim.PlayAt,
+  IsAnimPlaying  = WCLibAnim.IsPlaying,
+  StopAnim       = WCLibAnim.Stop,
+  StopAnimNow    = WCLibAnim.StopNow,
+  PlayScenario   = WCLibAnim.PlayScenario,
+  PlayScenarioAt = WCLibAnim.PlayScenarioAt,
+  StopScenario   = WCLibAnim.StopScenario,
+
   -- prompts
   CreatePrompt    = WCLibPrompt.Create,
   SetPromptVisible = WCLibPrompt.SetVisible,
