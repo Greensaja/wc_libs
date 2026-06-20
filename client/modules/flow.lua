@@ -33,6 +33,15 @@ local function removeObject(obj)
   end
 end
 
+local function safeCall(fn, ...)
+  if type(fn) ~= 'function' then return false end
+  local ok, err = pcall(fn, ...)
+  if not ok then
+    print(('[wc_libs] cleanup warning: %s'):format(tostring(err)))
+  end
+  return ok
+end
+
 function WCLibFlow.CreateCleanupBag()
   local bag = {
     peds = {},
@@ -59,23 +68,27 @@ function WCLibFlow.CreateCleanupBag()
 
     for _, prompt in ipairs(self.prompts) do
       if WCLibPrompt then
-        WCLibPrompt.SetVisible(prompt, false)
-        WCLibPrompt.Delete(prompt)
+        safeCall(WCLibPrompt.SetVisible, prompt, false)
+        safeCall(WCLibPrompt.Delete, prompt)
       end
     end
 
     for _, blip in ipairs(self.blips) do
-      WCLibFlow.ClearMissionMarker(blip)
+      safeCall(WCLibFlow.ClearMissionMarker, blip)
     end
 
     if self.gps and WCLibGPS then
-      WCLibGPS.ClearRoute()
+      safeCall(WCLibGPS.ClearRoute)
     end
 
-    for _, fn in ipairs(self.customs) do pcall(fn) end
-    for _, ped in ipairs(self.peds) do if WCLibEntity then WCLibEntity.DeletePed(ped) else removeObject(ped) end end
-    for _, vehicle in ipairs(self.vehicles) do if WCLibEntity then WCLibEntity.DeleteVehicle(vehicle) else removeObject(vehicle) end end
-    for _, object in ipairs(self.objects) do removeObject(object) end
+    for _, fn in ipairs(self.customs) do safeCall(fn) end
+    for _, ped in ipairs(self.peds) do
+      if WCLibEntity then safeCall(WCLibEntity.DeletePed, ped) else safeCall(removeObject, ped) end
+    end
+    for _, vehicle in ipairs(self.vehicles) do
+      if WCLibEntity then safeCall(WCLibEntity.DeleteVehicle, vehicle) else safeCall(removeObject, vehicle) end
+    end
+    for _, object in ipairs(self.objects) do safeCall(removeObject, object) end
   end
 
   return bag
