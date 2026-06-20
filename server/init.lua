@@ -94,6 +94,10 @@ WCLib = {
   AddMoney     = WCLibMoney.AddMoney,
   RemoveMoney  = WCLibMoney.RemoveMoney,
 
+  -- notify
+  Notify = WCLibServerNotify.Notify,
+  WcNotify = WCLibServerNotify.WcNotify,
+
   -- revive / heal
   Revive = WCLibRevive.Revive,
   Heal   = WCLibRevive.Heal,

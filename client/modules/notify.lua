@@ -176,3 +176,8 @@ function WCLibNotify.Notify(opts)
   end
   WCLibNotify._activeAdapter.Notify(opts or {})
 end
+
+RegisterNetEvent('wc_libs:client:notify')
+AddEventHandler('wc_libs:client:notify', function(opts)
+  WCLibNotify.Notify(opts or {})
+end)

@@ -112,6 +112,9 @@ function WCLibAdapterVORP.Notify(opts)
 end
 
 -- ─────────────────────────────────────────────────────────
+function WCLibAdapterVORP.TriggerServerCallback(name, ...)
+  return core().Callback.TriggerAwait(name, ...)
+end
 -- Lifecycle events
 -- ─────────────────────────────────────────────────────────
 -- VORP doesn't have a single clean "player loaded" client event the

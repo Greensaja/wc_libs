@@ -31,6 +31,7 @@ local _adapter = (_framework == 'vorp' and WCLibAdapterVORP)
 
 -- Wire modules that need the active adapter
 WCLibNotify._activeAdapter = _adapter
+WCLibClientCallback._activeAdapter = _adapter
 
 -- ─────────────────────────────────────────────────────────
 -- Framework introspection
@@ -115,6 +116,8 @@ WCLib = {
 
   -- notify
   Notify = WCLibNotify.Notify,
+  StartProgress = WCLibProgress.Start,
+  TriggerCallback = WCLibClientCallback.TriggerCallback,
 
   -- models / anims
   LoadModel        = WCLibModel.LoadModel,

@@ -19,10 +19,8 @@ local function namespaced(name)
 end
 
 --- Registers a server callback. Works the same way regardless of
--- framework — call this on the server, trigger it from the client
--- via WCLib.TriggerCallback (client-side helper not yet built; for
--- now use the framework's own TriggerCallback with the namespaced
--- name, or extend client/modules/ to add a matching trigger helper).
+-- framework. Call this on the server, then trigger it from the client
+-- with WCLib.TriggerCallback using the unprefixed callback name.
 -- @param name string  callback name (will be auto-prefixed with 'wc_libs:')
 -- @param handler function(source, cb, ...)
 function WCLibCallback.RegisterCallback(name, handler)

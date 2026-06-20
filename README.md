@@ -87,7 +87,7 @@ WCLibConfig.ForceFramework = 'vorp' -- or 'rsg', or nil to auto-detect
 - **Peds, horses & props** — `SpawnPed`, `SpawnHorse`, `SpawnProp`, `DeletePed`, `DeleteVehicle`, `FaceEachOther`, `PlacePedRelative`
 - **Distance & proximity** — `GetDistance`, `IsNearCoords`, `IsPlayerNearCoords`
 - **Discord webhooks** — `SendWebhook`, Green Studio branded embeds, `server_scripts`-only by construction (webhook URLs never exposed to the client)
-- **Callbacks** — `RegisterCallback` / `TriggerCallback`, namespaced under `wc_libs:` to avoid collisions
+- **Callbacks** — server `RegisterCallback` / `TriggerCallback` and client `TriggerCallback`, namespaced under `wc_libs:` to avoid collisions
 - **Lifecycle events** — `OnPlayerLoaded`, `OnPlayerUnload`, `OnJobUpdate`
 - **Framework introspection** — `Framework.Get()`, `Framework.Is('vorp')`
 - **Raw escape hatch** — `Raw.VORP()`, `Raw.RSG()` return the native core object directly for anything not yet wrapped
@@ -101,7 +101,7 @@ Flagged honestly rather than papered over — extend these in `_custom/` if you 
 - **VORP `onduty` status** isn't exposed on the character object in the docs this was built against, so `GetJob()` / `GetPlayer()` return `nil` for it on VORP. Works correctly on RSG.
 - **VORP `OnPlayerUnload`** has no confirmed dedicated server event name, so it currently registers but never fires. Reliable on RSG.
 - **RSG `OnJobUpdate`** — the docs only confirmed a *client*-side event name; server-side registration is a no-op + warning. Needs verification against a live RSG server.
-- **Client-side callback trigger helper isn't built yet.** Server-side `RegisterCallback` / `TriggerCallback` work; there's no matching client-side "trigger a server callback" wrapper yet — add one in `_custom/client.lua` if you need it.
+
 - **RSG adapters are unverified against a live server.** Written faithfully from RSG's published docs, but not yet smoke-tested in production. VORP adapters are based on real working Wild County RP code and carry more confidence.
 
 ## Extending wc_libs

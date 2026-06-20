@@ -97,6 +97,13 @@ function WCLibAdapterRSG.Notify(opts)
 end
 
 -- ─────────────────────────────────────────────────────────
+function WCLibAdapterRSG.TriggerServerCallback(name, ...)
+  local p = promise.new()
+  core().Functions.TriggerCallback(name, function(result)
+    p:resolve(result)
+  end, ...)
+  return Citizen.Await(p)
+end
 -- Lifecycle events
 -- ─────────────────────────────────────────────────────────
 

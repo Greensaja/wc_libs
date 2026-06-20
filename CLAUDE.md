@@ -64,6 +64,8 @@ wc_libs/
 | Function | Module | Notes |
 |---|---|---|
 | `Notify(opts)` | notify | 17 VORP variants or RSG ox_lib |
+| `StartProgress(label, durationMs, cb, style)` | progress | vorp_progressbar with timed fallback |
+| `TriggerCallback(name, ...)` | callback | Client -> server callback trigger, auto-prefixed `wc_libs:` |
 | `TopNotify(title, msg, header)` | notify | Native UiFeedPostTwoTextShard via DataView |
 | `WcNotify(msg, level, placement)` | notify | wc_notify:send wrapper |
 | `CreatePrompt / SetPromptVisible / IsPromptCompleted / DeletePrompt` | prompt | |
@@ -98,7 +100,7 @@ wc_libs/
 | `GetMoney / GetBankMoney / GetGold` | money | GetBankMoney on VORP returns nil (no bank currency) |
 | `AddMoney / RemoveMoney` | money | |
 | `Revive / Heal` | revive | RSG delegates to ambulance resource via config |
-| `RegisterCallback / TriggerCallback` | callback | Auto-prefixed `wc_libs:` |
+| `RegisterCallback / TriggerCallback` | callback | Server callbacks auto-prefixed `wc_libs:` |
 | `OnPlayerLoaded / OnPlayerUnload / OnJobUpdate` | lifecycle | OnPlayerUnload is a no-op on VORP (no confirmed event) |
 | `SendWebhook / FormatMoney` | webhook | Server-only — keeps Discord URLs off client |
 | `GetPlayersInRadius(source, radius)` | nearby | Returns array of source IDs, excludes self |
