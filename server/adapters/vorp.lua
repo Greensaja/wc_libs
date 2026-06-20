@@ -174,7 +174,14 @@ end
 -- ─────────────────────────────────────────────────────────
 
 function WCLibAdapterVORP.RegisterOnPlayerLoaded(callback)
-  AddEventHandler('vorp_core:Server:OnPlayerSpawned', function(source)
+  -- vorp_CharSelectedCharacter fires when an existing character is selected.
+  -- vorp_NewCharacter fires when a new character is created.
+  -- Both normalise to "player is ready" for our purposes.
+  -- source must be read from the global `source` — it is not a parameter here.
+  AddEventHandler('vorp_CharSelectedCharacter', function()
+    callback(source)
+  end)
+  AddEventHandler('vorp_NewCharacter', function()
     callback(source)
   end)
 end

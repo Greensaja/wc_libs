@@ -93,14 +93,16 @@ end
 
 function WCLibAdapterRSG.GetMoney(source)
   local Player = getRSGPlayer(source)
-  if not Player or not Player.PlayerData or not Player.PlayerData.money then return nil end
-  return Player.PlayerData.money[WCLibConfig.Money.rsg.cash]
+  if not Player or not Player.Functions or not Player.Functions.GetMoney then return nil end
+  local ok, val = pcall(function() return Player.Functions.GetMoney(WCLibConfig.Money.rsg.cash) end)
+  return ok and val or nil
 end
 
 function WCLibAdapterRSG.GetBankMoney(source)
   local Player = getRSGPlayer(source)
-  if not Player or not Player.PlayerData or not Player.PlayerData.money then return nil end
-  return Player.PlayerData.money[WCLibConfig.Money.rsg.bank]
+  if not Player or not Player.Functions or not Player.Functions.GetMoney then return nil end
+  local ok, val = pcall(function() return Player.Functions.GetMoney(WCLibConfig.Money.rsg.bank) end)
+  return ok and val or nil
 end
 
 function WCLibAdapterRSG.GetGold(source)
@@ -110,8 +112,9 @@ function WCLibAdapterRSG.GetGold(source)
     return 0
   end
   local Player = getRSGPlayer(source)
-  if not Player or not Player.PlayerData or not Player.PlayerData.money then return 0 end
-  return Player.PlayerData.money[goldKey] or 0
+  if not Player or not Player.Functions or not Player.Functions.GetMoney then return 0 end
+  local ok, val = pcall(function() return Player.Functions.GetMoney(goldKey) end)
+  return (ok and val) or 0
 end
 
 function WCLibAdapterRSG.AddMoney(source, amount, moneyKey)
