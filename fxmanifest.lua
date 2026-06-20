@@ -20,8 +20,14 @@ wc_libs_checker 'yes'
 wc_libs_name   '^5wc_libs ^4Version Check^3'
 wc_libs_github 'https://github.com/REPLACE_ME/wc_libs'
 
+ui_page 'nui/dialogue/index.html'
+
 files {
   'init.lua', -- bridge file: other resources include @wc_libs/init.lua to get the wc global
+  'nui/dialogue/index.html',
+  'nui/dialogue/style.css',
+  'nui/dialogue/main.js',
+  'nui/dialogue/RDR_Lino_Regular.ttf',
 }
 
 shared_scripts {
@@ -44,6 +50,10 @@ client_scripts {
   'client/modules/entity.lua',
   'client/modules/distance.lua',
   'client/modules/notify.lua',
+  'client/modules/emote.lua',
+  'client/modules/zone.lua',
+  'client/modules/wagon.lua',
+  'client/modules/dialogue.lua',  -- must come after emote + camera
   'client/init.lua', -- must load last: wires adapters + modules into WCLib and registers exports
   '_custom/client.lua',
 }
@@ -57,6 +67,9 @@ server_scripts {
   'server/modules/callback.lua',
   'server/modules/lifecycle.lua',
   'server/modules/webhook.lua',
+  'server/modules/nearby.lua',
+  'server/modules/skill.lua',
+  'server/modules/battlepass.lua',
   'server/init.lua', -- must load last
   '_custom/server.lua',
 }

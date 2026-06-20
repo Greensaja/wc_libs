@@ -140,6 +140,60 @@ function WCLibEntity.FaceEachOther(npcPed)
   SetEntityHeading(playerPed, (toPlayer + 180.0) % 360)
 end
 
+--- Gives a weapon to a ped using the RedM GiveWeaponToPed_2 native.
+-- @param ped number
+-- @param weaponName string  e.g. 'WEAPON_CATTLEMAN_CARBINE'
+-- @param ammoHash number    ammo type hash (GetHashKey('AMMO_...'))
+-- @param ammoCount number|nil  default 30
+function WCLibEntity.ArmPed(ped, weaponName, ammoHash, ammoCount)
+  ---@diagnostic disable-next-line: undefined-global
+  GiveWeaponToPed_2(ped, GetHashKey(weaponName), ammoCount or 30, true, true, 1, false, 0.5, 1.0, ammoHash, false, 0, false)
+end
+
+--- Configures combat behaviour on a ped.
+-- All opts fields are optional.
+-- @param ped number
+-- @param opts table|nil
+--   opts.health        number   max + current health (SetEntityMaxHealth + SetEntityHealth)
+--   opts.accuracy      number   0-100, default engine value
+--   opts.relationGroup string   group name passed through GetHashKey
+--   opts.fightToDeath  boolean  combat attr 46 — ped never retreats
+--   opts.canFlank      boolean  combat attr 52 — ped flanks its target
+--   opts.wontFlee      boolean  combat attr 5 + FleeAttributes 0 — ped stays and fights
+--   opts.range         number   SetPedCombatRange (default 2 = medium)
+--   opts.movement      number   SetPedCombatMovement (default 3 = defensive)
+--   opts.targetPed     number   ped to immediately task to combat
+function WCLibEntity.SetupCombatPed(ped, opts)
+  opts = opts or {}
+
+  if opts.health then
+    SetEntityMaxHealth(ped, opts.health)
+    SetEntityHealth(ped, opts.health)
+  end
+
+  if opts.accuracy then
+    SetPedAccuracy(ped, opts.accuracy)
+  end
+
+  if opts.relationGroup then
+    SetPedRelationshipGroupHash(ped, GetHashKey(opts.relationGroup))
+  end
+
+  if opts.fightToDeath then SetPedCombatAttributes(ped, 46, true) end
+  if opts.canFlank     then SetPedCombatAttributes(ped, 52, true) end
+  if opts.wontFlee     then
+    SetPedCombatAttributes(ped, 5, true)
+    SetPedFleeAttributes(ped, 0, false)
+  end
+
+  SetPedCombatRange(ped, opts.range or 2)
+  SetPedCombatMovement(ped, opts.movement or 3)
+
+  if opts.targetPed then
+    TaskCombatPed(ped, opts.targetPed, 0, 16)
+  end
+end
+
 --- Positions childPed relative to parentPed using a forward/right/up
 -- offset (in metres) plus a heading delta. Used for things like
 -- "place this NPC right in front of the player, facing them."

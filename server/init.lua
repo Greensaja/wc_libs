@@ -35,6 +35,7 @@ WCLibMoney._activeAdapter            = _adapter
 WCLibRevive._activeAdapter           = _adapter
 WCLibCallback._activeAdapter         = _adapter
 WCLibServerLifecycle._activeAdapter  = _adapter
+WCLibSkill._activeAdapter            = _adapter
 
 -- ─────────────────────────────────────────────────────────
 -- Framework introspection
@@ -109,6 +110,18 @@ WCLib = {
   -- webhook
   SendWebhook  = WCLibWebhook.Send,
   FormatMoney  = WCLibWebhook.FormatMoney,
+
+  -- nearby
+  GetPlayersInRadius = WCLibNearby.GetPlayersInRadius,
+
+  -- skills (VORP-only; warns + returns defaults on RSG)
+  GetSkillInfo  = WCLibSkill.GetInfo,
+  GiveSkillXP   = WCLibSkill.GiveXP,
+  ApplySkillBonus = WCLibSkill.ApplyBonus,
+
+  -- battlepass
+  AddBattlepassXP          = WCLibBattlepass.AddXP,
+  AddBattlepassXPForPlayer = WCLibBattlepass.AddXPForPlayer,
 
   -- version
   GetVersion = WCLib_GetVersion,

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>wc_libs dialogue</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── MAIN DIALOGUE PANEL ── -->
+  <div id="encounter-root" class="hidden">
+
+    <div class="enc-header">
+      <span class="enc-header-title" id="enc-header-title">Conversation</span>
+      <div class="enc-timer-wrap">
+        <span class="enc-timer-icon">⏳</span>
+        <span class="enc-timer" id="enc-timer">60</span>
+      </div>
+    </div>
+
+    <div class="enc-npc-row">
+      <div class="enc-npc-avatar" id="enc-npc-avatar">
+        <span id="enc-npc-initial">?</span>
+      </div>
+      <div class="enc-npc-info">
+        <span class="enc-npc-name" id="enc-npc-name">Stranger</span>
+        <span class="enc-npc-mood" id="enc-npc-mood">Neutral</span>
+      </div>
+    </div>
+
+    <div class="enc-speech-wrap">
+      <div class="enc-speech-bubble">
+        <p class="enc-speech-text" id="enc-speech-text"></p>
+      </div>
+    </div>
+
+    <div class="enc-trust-section">
+      <div class="enc-trust-label-row">
+        <span class="enc-trust-label" id="enc-trust-label">Trust</span>
+        <span class="enc-trust-val"   id="enc-trust-val">50</span>
+      </div>
+      <div class="enc-trust-bar">
+        <div class="enc-trust-fill" id="enc-trust-fill" style="width:50%"></div>
+      </div>
+    </div>
+
+    <div class="enc-options" id="enc-options"></div>
+
+  </div>
+
+  <!-- ── ACCEPT / DECLINE PANEL ── -->
+  <div id="accept-root" class="hidden">
+
+    <div class="acc-header">
+      <span class="acc-header-title" id="acc-header-title">Someone needs help!</span>
+    </div>
+
+    <div class="acc-npc-row">
+      <div class="acc-npc-avatar" id="acc-npc-avatar">
+        <span id="acc-npc-initial">?</span>
+      </div>
+      <div class="acc-npc-name-wrap">
+        <span class="acc-npc-name" id="acc-npc-name">Stranger</span>
+      </div>
+    </div>
+
+    <div class="acc-speech-wrap">
+      <div class="acc-speech-bubble">
+        <p class="acc-speech-text" id="acc-speech-text"></p>
+      </div>
+    </div>
+
+    <div class="acc-options" id="acc-options">
+      <button class="acc-btn acc-btn-accept"  id="acc-btn-accept">Help them.</button>
+      <button class="acc-btn acc-btn-decline" id="acc-btn-decline">Walk away.</button>
+    </div>
+
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

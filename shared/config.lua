@@ -47,6 +47,13 @@ WCLibConfig.RSGAmbulanceReviveExport = 'Revive'
 WCLibConfig.RSGAmbulanceHealExport   = 'Heal'
 
 -- ─────────────────────────────────────────────────────────
+-- wc_notify integration
+-- ─────────────────────────────────────────────────────────
+-- Event name fired by WCLibNotify.WcNotify() and WCLibSkill.ApplyBonus().
+-- Change this if your server uses a different event name for wc_notify.
+WCLibConfig.WcNotifyEvent = 'wc_notify:send'
+
+-- ─────────────────────────────────────────────────────────
 -- Webhook defaults (Green Studio branding)
 -- ─────────────────────────────────────────────────────────
 -- Per-resource code should still call WCLib.Webhook.Send(...) with its

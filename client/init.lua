@@ -29,7 +29,7 @@ local _adapter = (_framework == 'vorp' and WCLibAdapterVORP)
               or (_framework == 'rsg'  and WCLibAdapterRSG)
               or nil
 
--- Wire the notify module to the active adapter
+-- Wire modules that need the active adapter
 WCLibNotify._activeAdapter = _adapter
 
 -- ─────────────────────────────────────────────────────────
@@ -149,12 +149,42 @@ WCLib = {
   DeleteVehicle    = WCLibEntity.DeleteVehicle,
   FaceEachOther    = WCLibEntity.FaceEachOther,
   PlacePedRelative = WCLibEntity.PlacePedRelative,
+  SetupCombatPed   = WCLibEntity.SetupCombatPed,
+  ArmPed           = WCLibEntity.ArmPed,
 
   -- distance
   GetDistance        = WCLibDistance.GetDistance,
-  SquaredDistance     = WCLibDistance.SquaredDistance,
-  IsNearCoords        = WCLibDistance.IsNearCoords,
-  IsPlayerNearCoords  = WCLibDistance.IsPlayerNearCoords,
+  SquaredDistance    = WCLibDistance.SquaredDistance,
+  IsNearCoords       = WCLibDistance.IsNearCoords,
+  IsPlayerNearCoords = WCLibDistance.IsPlayerNearCoords,
+
+  -- notify (extended)
+  TopNotify = WCLibNotify.TopNotify,
+  WcNotify  = WCLibNotify.WcNotify,
+
+  -- emotes
+  ShareEmotes                = WCLibEmote.ShareEmotes,
+  FailEmotes                 = WCLibEmote.FailEmotes,
+  StartConversationGestures  = WCLibEmote.StartConversationGestures,
+  PlayShareEmote             = WCLibEmote.PlayShare,
+  PlayFailEmote              = WCLibEmote.PlayFail,
+  PlayRewardHandover         = WCLibEmote.PlayRewardHandover,
+
+  -- zones
+  IsInsideZone       = WCLibZone.IsInside,
+  IsPlayerInsideZone = WCLibZone.IsPlayerInside,
+
+  -- wagons
+  SpawnWagon      = WCLibWagon.Spawn,
+  DeleteWagon     = WCLibWagon.Delete,
+  RepairWagon     = WCLibWagon.Repair,
+  FreezeWagon     = WCLibWagon.Freeze,
+  GetWagonWheelPos = WCLibWagon.GetWheelPos,
+
+  -- dialogue (NUI)
+  RunDialogue  = WCLibDialogue.Run,
+  RunAccept    = WCLibDialogue.RunAccept,
+  WatchIgnore  = WCLibDialogue.WatchIgnore,
 
   -- version
   GetVersion = WCLib_GetVersion,
