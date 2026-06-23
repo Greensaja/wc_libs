@@ -127,7 +127,7 @@ function WCLibDialogue.Run(def, npcPed, timeoutSecs, opts)
 
   _active = {
     timerRunning   = true,
-    trust          = 50,
+    trust          = def.startTrust or 50,
     currentOptions = options,
     stepDefs       = def.steps,
     ownerResource  = owner,
