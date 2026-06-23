@@ -26,3 +26,29 @@ function WCLibServerNotify.WcNotify(source, msg, level, placement)
   }, level or 'INFO')
   return true
 end
+
+--- Sends a VORP icon-badge popup to a player (the "+$50 / item received" style).
+-- On RSG or if vorp_core is unavailable, falls back to WcNotify.
+-- @param source   number
+-- @param text     string   e.g. "+$50"
+-- @param icon     string   item icon key e.g. 'itemtype_cash'
+-- @param color    string|nil  VORP color constant e.g. 'COLOR_WHITE' (default)
+-- @param duration number|nil  ms, default 3000
+-- @param dict     string|nil  texture dict, default 'itemtype_textures'
+function WCLibServerNotify.NotifyIcon(source, text, icon, color, duration, dict)
+  if not source then return false end
+  local ok = pcall(function()
+    local core = exports.vorp_core:GetCore()
+    if core and core.NotifyAvanced then
+      core.NotifyAvanced(source, text,
+        dict or 'itemtype_textures',
+        icon or 'default',
+        color or 'COLOR_WHITE',
+        duration or 3000)
+    end
+  end)
+  if not ok then
+    WCLibServerNotify.WcNotify(source, text)
+  end
+  return true
+end

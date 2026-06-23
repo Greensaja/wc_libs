@@ -59,6 +59,7 @@ client_scripts {
   'client/modules/emote.lua',
   'client/modules/zone.lua',
   'client/modules/wagon.lua',
+  'client/modules/marker.lua',
   'client/modules/dialogue.lua',  -- must come after emote + camera
   'client/init.lua', -- must load last: wires adapters + modules into WCLib and registers exports
   '_custom/client.lua',

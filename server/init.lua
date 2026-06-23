@@ -95,8 +95,9 @@ WCLib = {
   RemoveMoney  = WCLibMoney.RemoveMoney,
 
   -- notify
-  Notify = WCLibServerNotify.Notify,
-  WcNotify = WCLibServerNotify.WcNotify,
+  Notify     = WCLibServerNotify.Notify,
+  WcNotify   = WCLibServerNotify.WcNotify,
+  NotifyIcon = WCLibServerNotify.NotifyIcon,
 
   -- revive / heal
   Revive = WCLibRevive.Revive,

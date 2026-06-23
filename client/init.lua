@@ -147,8 +147,9 @@ WCLib = {
   WatchPlayerAway = WCLibFlow.WatchPlayerAway,
 
   -- blips
-  CreateBlip = WCLibBlip.Create,
-  RemoveBlip = WCLibBlip.Remove,
+  CreateBlip       = WCLibBlip.Create,
+  RemoveBlip       = WCLibBlip.Remove,
+  CreateEntityBlip = WCLibBlip.CreateEntityBlip,
   CreateMissionMarker = WCLibFlow.CreateMissionMarker,
   ClearMissionMarker  = WCLibFlow.ClearMissionMarker,
   CreateCleanupBag    = WCLibFlow.CreateCleanupBag,
@@ -171,9 +172,13 @@ WCLib = {
   DeletePed        = WCLibEntity.DeletePed,
   DeleteVehicle    = WCLibEntity.DeleteVehicle,
   FaceEachOther    = WCLibEntity.FaceEachOther,
+  NpcWalkAway      = WCLibEntity.NpcWalkAway,
   PlacePedRelative = WCLibEntity.PlacePedRelative,
   SetupCombatPed   = WCLibEntity.SetupCombatPed,
   ArmPed           = WCLibEntity.ArmPed,
+
+  -- ground markers
+  CreateMarker = WCLibMarker.Create,
 
   -- distance
   GetDistance        = WCLibDistance.GetDistance,

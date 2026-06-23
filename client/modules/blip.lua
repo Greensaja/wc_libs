@@ -32,3 +32,24 @@ function WCLibBlip.Remove(blip)
     RemoveBlip(blip)
   end
 end
+
+--- Creates a coord blip that tracks a moving entity every 100 ms.
+-- The blip handle is identical to Create — pass it to Remove to stop tracking.
+-- The background thread exits automatically when the blip or entity is gone.
+-- @param entity number  ped/vehicle/object handle
+-- @param label  string|nil
+-- @return number|nil  blip handle, or nil if entity doesn't exist
+function WCLibBlip.CreateEntityBlip(entity, label)
+  if not entity or not DoesEntityExist(entity) then return nil end
+  local pos  = GetEntityCoords(entity)
+  local blip = WCLibBlip.Create(pos.x, pos.y, pos.z, label)
+  if not blip then return nil end
+  CreateThread(function()
+    while DoesBlipExist(blip) and DoesEntityExist(entity) do
+      Wait(100)
+      local p = GetEntityCoords(entity)
+      SetBlipCoords(blip, p.x, p.y, p.z)
+    end
+  end)
+  return blip
+end

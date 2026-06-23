@@ -194,6 +194,19 @@ function WCLibEntity.SetupCombatPed(ped, opts)
   end
 end
 
+--- Sends an NPC walking toward a random point ~60 m away from the local player.
+-- Used to dismiss NPCs after a conversation or event ends.
+-- @param ped number
+function WCLibEntity.NpcWalkAway(ped)
+  if not DoesEntityExist(ped) then return end
+  local pPos = GetEntityCoords(PlayerPedId())
+  local ang  = math.random(0, 359) * (math.pi / 180.0)
+  local tx   = pPos.x + math.cos(ang) * 60.0
+  local ty   = pPos.y + math.sin(ang) * 60.0
+  local tz   = WCLibEntity.SnapZ(tx, ty, pPos.z)
+  TaskGoToCoordAnyMeans(ped, tx, ty, tz, 1.0, 0, false, 786603, 0.0)
+end
+
 --- Positions childPed relative to parentPed using a forward/right/up
 -- offset (in metres) plus a heading delta. Used for things like
 -- "place this NPC right in front of the player, facing them."

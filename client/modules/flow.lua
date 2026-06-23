@@ -121,7 +121,11 @@ function WCLibFlow.CreateCleanupBag()
       if WCLibEntity then safeCall(WCLibEntity.DeletePed, ped) else safeCall(removeObject, ped) end
     end
     for _, vehicle in ipairs(self.vehicles) do
-      if WCLibEntity then safeCall(WCLibEntity.DeleteVehicle, vehicle) else safeCall(removeObject, vehicle) end
+      if GetEntityType(vehicle) == 1 then
+        if WCLibEntity then safeCall(WCLibEntity.DeletePed, vehicle) else safeCall(removeObject, vehicle) end
+      else
+        if WCLibEntity then safeCall(WCLibEntity.DeleteVehicle, vehicle) else safeCall(removeObject, vehicle) end
+      end
     end
     for _, object in ipairs(self.objects) do safeCall(removeObject, object) end
   end
