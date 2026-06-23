@@ -67,7 +67,7 @@ function WCLibEntity.SpawnHorse(x, y, z, heading, modelList)
   SetEntityInvincible(horse, true)
   SetBlockingOfNonTemporaryEvents(horse, true)
   Citizen.InvokeNative(0xD3A7B003ED343FD9, horse, 0x1EE21489, true, true, true) -- breed/variant init
-  for i = 0, 22 do SetAttributePoints(horse, i, 9999) end
+  for i = 0, 22 do SetAttributePoints(horse, i, 999) end
   SetModelAsNoLongerNeeded(hash)
   return horse
 end
