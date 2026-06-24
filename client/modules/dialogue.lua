@@ -15,6 +15,33 @@ WCLibDialogue = {}
 
 local _active = nil   -- { timerRunning, trust, currentOptions, stepDefs, finalTrust, acceptResult, ownerResource }
 
+-- Push-to-talk bypass: mirrors vorp_progressbar's approach so voice chat
+-- still works while the dialogue NUI has focus.
+local _pttActive        = false
+local _pttKeepEnabled   = false
+local _pttControl       = `INPUT_PUSH_TO_TALK`
+
+CreateThread(function()
+  while true do
+    local sleep = 1000
+    if _pttActive then
+      sleep = 0
+      if SetNuiFocusKeepInput ~= nil and not _pttKeepEnabled then
+        SetNuiFocusKeepInput(true)
+        _pttKeepEnabled = true
+      end
+      DisableAllControlActions(0)
+      EnableControlAction(0, _pttControl, true)
+    else
+      if SetNuiFocusKeepInput ~= nil and _pttKeepEnabled then
+        SetNuiFocusKeepInput(false)
+        _pttKeepEnabled = false
+      end
+    end
+    Wait(sleep)
+  end
+end)
+
 local function dialogueOwner(opts)
   opts = opts or {}
   return opts.ownerResource or GetInvokingResource() or GetCurrentResourceName()
@@ -28,6 +55,7 @@ AddEventHandler('onResourceStop', function(resourceName)
   if _active and _active.ownerResource == resourceName then
     _active.timerRunning = false
     _active.ownerStopped = true
+    _pttActive = false
     SendNUIMessage({ type = 'wcdialogue:closeDialogue' })
     SetNuiFocus(false, false)
     WCLibCamera.DisableDialogueCamera()
@@ -88,6 +116,7 @@ end)
 -- ─────────────────────────────────────────────────────────
 
 local function _close()
+  _pttActive = false
   SendNUIMessage({ type = 'wcdialogue:closeDialogue' })
   SetNuiFocus(false, false)
   WCLibCamera.DisableDialogueCamera()
@@ -154,6 +183,7 @@ function WCLibDialogue.Run(def, npcPed, timeoutSecs, opts)
     timeLeft   = timerLeft,
   })
   SetNuiFocus(true, true)
+  _pttActive = true
 
   CreateThread(function()
     while _active and _active.timerRunning do
@@ -236,6 +266,7 @@ function WCLibDialogue.RunAccept(def, npcPed, opts)
     decline = def.options and def.options.decline and def.options.decline.text or 'Walk away.',
   })
   SetNuiFocus(true, true)
+  _pttActive = true
 
   local deadline = GetGameTimer() + 30000
   while result == nil and GetGameTimer() < deadline do
