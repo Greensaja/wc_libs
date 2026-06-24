@@ -39,6 +39,7 @@ body {
   height: 100vh;
   overflow: hidden;
   position: relative;
+  pointer-events: none;
 }
 
 .hidden { display: none !important; }
@@ -390,6 +391,7 @@ body {
   transform: translateY(-50%);
   max-height: 90vh;
   animation: panelInLeft 0.3s ease;
+  pointer-events: auto;
 }
 
 #accept-root::before {
@@ -523,6 +525,7 @@ body {
   max-height: 90vh;
   overflow-y: auto;
   animation: panelInLeft 0.3s ease;
+  pointer-events: auto;
 }
 
 @keyframes panelInLeft {

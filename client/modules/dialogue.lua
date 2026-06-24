@@ -21,6 +21,14 @@ local _pttActive        = false
 local _pttKeepEnabled   = false
 local _pttControl       = `INPUT_PUSH_TO_TALK`
 
+local function releaseInputLock()
+  _pttActive = false
+  if SetNuiFocusKeepInput ~= nil and _pttKeepEnabled then
+    SetNuiFocusKeepInput(false)
+    _pttKeepEnabled = false
+  end
+end
+
 CreateThread(function()
   while true do
     local sleep = 1000
@@ -55,7 +63,7 @@ AddEventHandler('onResourceStop', function(resourceName)
   if _active and _active.ownerResource == resourceName then
     _active.timerRunning = false
     _active.ownerStopped = true
-    _pttActive = false
+    releaseInputLock()
     SendNUIMessage({ type = 'wcdialogue:closeDialogue' })
     SetNuiFocus(false, false)
     WCLibCamera.DisableDialogueCamera()
@@ -116,7 +124,7 @@ end)
 -- ─────────────────────────────────────────────────────────
 
 local function _close()
-  _pttActive = false
+  releaseInputLock()
   SendNUIMessage({ type = 'wcdialogue:closeDialogue' })
   SetNuiFocus(false, false)
   WCLibCamera.DisableDialogueCamera()
