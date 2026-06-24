@@ -21,6 +21,12 @@ end
 --- Registers a server callback. Works the same way regardless of
 -- framework. Call this on the server, then trigger it from the client
 -- with WCLib.TriggerCallback using the unprefixed callback name.
+--
+-- IMPORTANT: VORP's promise system resolves only a SINGLE value.
+-- Always call cb() with ONE argument. Use a table for multiple values:
+--   cb({ job = 'sheriff', grade = 2 })   -- correct
+--   cb('sheriff', 2)                     -- WRONG: grade is silently dropped
+--
 -- @param name string  callback name (will be auto-prefixed with 'wc_libs:')
 -- @param handler function(source, cb, ...)
 function WCLibCallback.RegisterCallback(name, handler)
